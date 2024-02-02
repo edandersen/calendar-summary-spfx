@@ -29,6 +29,15 @@ export default class CalendarSummaryWebPart extends React.Component<ICalendarSum
   }
 
   private async _getCalendarSummary(): Promise<void> {
+
+    // check that the API Key has been added to the web part properties
+    if (!this.props.apiKey)
+    {
+      this.setState({eventsSummary: "Add your Open AI API Key to the Properties / options of this " +
+      "web part to get a nice summary of your calendar events for the day!"});
+      return;
+    }
+
     const client = await this.props.context.msGraphClientFactory.getClient('3');
     const startOfDay = new Date(); // now
     const endOfDay = new Date();
@@ -37,7 +46,7 @@ export default class CalendarSummaryWebPart extends React.Component<ICalendarSum
     const start = startOfDay.toISOString();
     const end = endOfDay.toISOString();
 
-    console.log('fetching calendars');
+    console.log(this.props.apiKey);
 
     // first get the user's calendar events for the rest of the day
     await client
@@ -47,6 +56,7 @@ export default class CalendarSummaryWebPart extends React.Component<ICalendarSum
       .orderby('start/dateTime')
       .get(async (error, response) => {
         if (error) {
+          this.setState({eventsSummary: "There was a problem getting your calendar events. Make sure this web part has Calendars.Read permission."})
           console.error("Error fetching calendar events:", error);
           return;
         }
@@ -67,7 +77,7 @@ export default class CalendarSummaryWebPart extends React.Component<ICalendarSum
         })
 
         // call ChatGPT with the events for the day
-        const apiKey = '';
+        const apiKey = this.props.apiKey;
         const endpoint = 'https://api.openai.com/v1/chat/completions';
         const data = {
             model: "gpt-3.5-turbo",
@@ -93,7 +103,8 @@ export default class CalendarSummaryWebPart extends React.Component<ICalendarSum
         });
 
         if (!gptResponse.ok) {
-            throw new Error(`Error: ${gptResponse.status}`);
+            this.setState({eventsSummary: "There was a problem summarising your calendar for the day. Maybe check your API Key."})
+            return;
         }
 
         // stream the tokens from the ChatGPT response, updating the state as the response is generated

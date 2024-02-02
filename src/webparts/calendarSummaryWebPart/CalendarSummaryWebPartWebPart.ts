@@ -13,7 +13,7 @@ import CalendarSummaryWebPart from './components/CalendarSummaryWebPart';
 import { ICalendarSummaryWebPartProps } from './components/ICalendarSummaryWebPartProps';
 
 export interface ICalendarSummaryWebPartWebPartProps {
-  description: string;
+  apiKey: string;
 }
 
 export default class CalendarSummaryWebPartWebPart extends BaseClientSideWebPart<ICalendarSummaryWebPartWebPartProps> {
@@ -25,7 +25,7 @@ export default class CalendarSummaryWebPartWebPart extends BaseClientSideWebPart
     const element: React.ReactElement<ICalendarSummaryWebPartProps> = React.createElement(
       CalendarSummaryWebPart,
       {
-        description: this.properties.description,
+        apiKey: this.properties.apiKey,
         isDarkTheme: this._isDarkTheme,
         environmentMessage: this._environmentMessage,
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
@@ -107,8 +107,8 @@ export default class CalendarSummaryWebPartWebPart extends BaseClientSideWebPart
             {
               groupName: strings.BasicGroupName,
               groupFields: [
-                PropertyPaneTextField('description', {
-                  label: strings.DescriptionFieldLabel
+                PropertyPaneTextField('apiKey', {
+                  label: strings.OpenAIAPIKeyFieldLabel
                 })
               ]
             }

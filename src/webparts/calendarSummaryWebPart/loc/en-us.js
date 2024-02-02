@@ -1,8 +1,8 @@
 define([], function() {
   return {
-    "PropertyPaneDescription": "Description",
-    "BasicGroupName": "Group Name",
-    "DescriptionFieldLabel": "Description Field",
+    "PropertyPaneDescription": "A super cool AI powered Calendar summary",
+    "BasicGroupName": "Settings",
+    "OpenAIAPIKeyFieldLabel": "Open AI API Key (required)",
     "AppLocalEnvironmentSharePoint": "The app is running on your local environment as SharePoint web part",
     "AppLocalEnvironmentTeams": "The app is running on your local environment as Microsoft Teams app",
     "AppLocalEnvironmentOffice": "The app is running on your local environment in office.com",
