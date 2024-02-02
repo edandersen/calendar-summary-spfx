@@ -1,6 +1,6 @@
 # Calendar Summary SPFx Web Part Experiment
 
-("or Ed's first ever Sharepoint component")
+(or "Ed's first ever Sharepoint component")
 
 This is an experimental Sharepoint Framework (SPFx) web part that:
 
