@@ -39,18 +39,19 @@ export default class CalendarSummaryWebPart extends React.Component<ICalendarSum
 
     console.log('fetching calendars');
 
+    // first get the user's calendar events for the rest of the day
     await client
       .api(`/me/calendar/events`)
       .select('subject,start,end,location,attendees')
       .filter(`start/dateTime gt '${start}' and end/dateTime lt '${end}'`)
       .orderby('start/dateTime')
-      
       .get(async (error, response) => {
         if (error) {
           console.error("Error fetching calendar events:", error);
           return;
         }
 
+        // normalize the Outlook event data into something more reasonable and easier for ChatGPT to parse
         const normalizedEvents: NormalizedOutlookEvent[] = [];
         const returnedEvents = response.value as MicrosoftGraph.Event[];
 
@@ -58,16 +59,14 @@ export default class CalendarSummaryWebPart extends React.Component<ICalendarSum
             normalizedEvents.push({
               subject: outlookEvent.subject ?? "",
               location: outlookEvent.location?.displayName ?? "",
-              // convert Outlook UTC time to local time
+              // convert Outlook UTC time to local time in a nice textual format
               startDateTime: outlookEvent.start?.dateTime ? new Date(outlookEvent.start?.dateTime + "Z").toTimeString().split(" ")[0] : "",
               endDateTime: outlookEvent.end?.dateTime ? new Date(outlookEvent.end?.dateTime + "Z").toTimeString().split(" ")[0] : "",
               attendees: outlookEvent.attendees?.map(attendee => attendee.emailAddress?.name ?? "") ?? []
             })
         })
 
-        console.log(returnedEvents);
-        console.log(normalizedEvents);
-
+        // call ChatGPT with the events for the day
         const apiKey = '';
         const endpoint = 'https://api.openai.com/v1/chat/completions';
         const data = {
@@ -80,7 +79,8 @@ export default class CalendarSummaryWebPart extends React.Component<ICalendarSum
                 "If there are no attendees listed, don't mention it." +
                 JSON.stringify(normalizedEvents)
               }
-            ]
+            ],
+            stream: true
         };
 
         const gptResponse = await fetch(endpoint, {
@@ -89,17 +89,42 @@ export default class CalendarSummaryWebPart extends React.Component<ICalendarSum
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${apiKey}`
           },
-          body: JSON.stringify(data)
+          body: JSON.stringify(data),
         });
 
         if (!gptResponse.ok) {
             throw new Error(`Error: ${gptResponse.status}`);
         }
 
-        var textResponse = (await gptResponse.json()).choices[0].message.content;
+        // stream the tokens from the ChatGPT response, updating the state as the response is generated
+        const streamingReader = gptResponse.body?.pipeThrough(new TextDecoderStream()).getReader();
+        if (!streamingReader) return;
 
-        this.setState({eventsSummary: textResponse});
+        let allResponseText : string = "";
 
+        while (true) {
+          const { value, done } = await streamingReader.read();
+          if (done) break;
+          let dataDone = false;
+          const streamingResponseLines = value.split('\n');
+          streamingResponseLines.forEach((data) => {
+            if (data.length === 0) return; 
+            if (data[0] == ':') return; 
+            if (data === 'data: [DONE]') {
+              dataDone = true;
+              return;
+            }
+            const json = JSON.parse(data.substring(6));
+
+            if (json.choices[0].delta.content)
+            {
+              allResponseText += json.choices[0].delta.content; 
+
+              this.setState({eventsSummary: allResponseText});
+            }
+          });
+          if (dataDone) break;
+        }
       });
 
   }
@@ -113,7 +138,7 @@ export default class CalendarSummaryWebPart extends React.Component<ICalendarSum
     return (
       <section className={`${styles.calendarSummaryWebPart} ${hasTeamsContext ? styles.teams : ''}`}>
         <h1>Hi {escape(userDisplayName)}!</h1>
-        <h3>{this.state.eventsSummary}</h3>
+        <p>{this.state.eventsSummary}</p>
       </section>
     );
   }
