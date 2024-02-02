@@ -4,7 +4,7 @@
 
 This is an experimental Sharepoint Framework (SPFx) web part that:
 
-- Loads your Outlook calendar for the rest of the day
+- Loads your Outlook calendar for the rest of the day via the Graph API
 - Uses the OpenAI API to generate you a nice summary of your day
 - Streams the result to the screen
 
