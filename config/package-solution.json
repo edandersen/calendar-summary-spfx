@@ -1,0 +1,46 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "calendar-summary-client-side-solution",
+    "id": "cf337c8f-5b29-44ef-8b51-37b1503302d6",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.18.2"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "CalendarSummary description"
+      },
+      "longDescription": {
+        "default": "CalendarSummary description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "calendar-summary Feature",
+        "description": "The feature that activates elements of the calendar-summary solution.",
+        "id": "b1cd0c43-c1aa-44c1-83cb-e4c41c414751",
+        "version": "1.0.0.0"
+      }
+    ],
+    "webApiPermissionRequests": [
+      {
+        "resource": "Microsoft Graph",
+        "scope": "Calendars.Read"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/calendar-summary.sppkg"
+  }
+}
