@@ -1,4 +1,6 @@
-# Calendar Summary Sharepoint Framework Web Part Experiment
+# Calendar Summary SPFx Web Part Experiment
+
+("or Ed's first ever Sharepoint component")
 
 This is an experimental Sharepoint Framework (SPFx) web part that:
 
@@ -6,7 +8,7 @@ This is an experimental Sharepoint Framework (SPFx) web part that:
 - Uses the OpenAI API to generate you a nice summary of your day
 - Streams the result to the screen
 
-The main logic for this code is in [this fiel](/src/webparts/calendarSummaryWebPart/components/CalendarSummaryWebPart.tsx)
+This web part was generated using the spfx yeoman template, and the main logic for this generation of the summary is in [CalendarSummaryWebPart.tsx](/src/webparts/calendarSummaryWebPart/components/CalendarSummaryWebPart.tsx).
 
 Examples of the results:
 
@@ -24,7 +26,7 @@ Empty calendar
 
 ## How to use / install
 
-- Download the .sppkg file from the Releases page
+- Download the .sppkg file from the [Releases](https://github.com/edandersen/calendar-summary-spfx/releases/) page
 - Upload to Sharepoint App catalog
 - Add as a web part on a site
 - On the Properties panel of the web part, add a valid OpenAI API key
