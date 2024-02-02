@@ -46,8 +46,6 @@ export default class CalendarSummaryWebPart extends React.Component<ICalendarSum
     const start = startOfDay.toISOString();
     const end = endOfDay.toISOString();
 
-    console.log(this.props.apiKey);
-
     // first get the user's calendar events for the rest of the day
     await client
       .api(`/me/calendar/events`)
