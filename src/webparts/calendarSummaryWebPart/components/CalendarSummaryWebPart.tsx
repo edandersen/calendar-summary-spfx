@@ -36,7 +36,7 @@ export default class CalendarSummaryWebPart extends React.Component<ICalendarSum
       .select('subject,start,end,location,attendees')
       .filter(`start/dateTime gt '${start}' and end/dateTime lt '${end}'`)
       .orderby('start/dateTime')
-      .get((error, response) => {
+      .get(async (error, response) => {
         if (error) {
           console.error("Error fetching calendar events:", error);
           return;
@@ -44,8 +44,41 @@ export default class CalendarSummaryWebPart extends React.Component<ICalendarSum
 
         if (response.value.length == 0) this.setState({eventsSummary: "No events today."})
         else {
+          console.log('got event')
           this.setState({eventsSummary: "Next event is: " + response.value[0].subject})
         }
+
+        console.log('calling chatgpt')
+
+        const apiKey = '';
+        const endpoint = 'https://api.openai.com/v1/chat/completions';
+        const data = {
+            model: "gpt-3.5-turbo",
+            messages: [
+              {
+                role: "user",
+                content: "Say this is a test"
+              }
+            ]
+        };
+
+        const gptResponse = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${apiKey}`
+          },
+          body: JSON.stringify(data)
+        });
+
+        if (!gptResponse.ok) {
+            throw new Error(`Error: ${gptResponse.status}`);
+        }
+
+        var textResponse = (await gptResponse.json()).choices[0].message.content;
+
+        this.setState({eventsSummary: textResponse});
+
       });
 
   }
