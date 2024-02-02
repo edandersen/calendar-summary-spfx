@@ -35,8 +35,10 @@ Empty calendar
 
 ## Potential improvements
 
-Obviously removing the OpenAI dependency would be preferable here, but:
+This is a proof of concept - ideally the API Key would not be exposed to the client app. You would want to create an app or Azure function protected by Entra ID that the client connects to, which then securely makes the Open AI connection. 
+
+Even better would be removing the Open AI dependency entirely, but:
 
 - Azure Open AI service is invite only at the moment
-- Somehow call the Bing Copilot API for "chat" when a Microsoft 365 tenant has access to it. This would be the best as then the solution would not require an API key.
+- Somehow call the Bing Copilot API for "chat" when a Microsoft 365 tenant has access to it, using the current user's credentials. This would be the best as then the solution would not require an API key or middleware.
 
