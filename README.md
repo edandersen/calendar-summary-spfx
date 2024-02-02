@@ -1,73 +1,40 @@
-# calendar-summary
+# Calendar Summary Sharepoint Framework Web Part Experiment
 
-## Summary
+This is an experimental Sharepoint Framework (SPFx) web part that:
 
-Short summary on functionality and used technologies.
+- Loads your Outlook calendar for the rest of the day
+- Uses the OpenAI API to generate you a nice summary of your day
+- Streams the result to the screen
 
-[picture of the solution in action, if possible]
+The main logic for this code is in [this fiel](/src/webparts/calendarSummaryWebPart/components/CalendarSummaryWebPart.tsx)
 
-## Used SharePoint Framework Version
+Examples of the results:
 
-![version](https://img.shields.io/badge/version-1.18.2-green.svg)
+Two events
 
-## Applies to
+![image of two events](docs/sharepoint-1.gif)
 
-- [SharePoint Framework](https://aka.ms/spfx)
-- [Microsoft 365 tenant](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/set-up-your-developer-tenant)
+One event
 
-> Get your own free development tenant by subscribing to [Microsoft 365 developer program](http://aka.ms/o365devprogram)
+![image of one events](docs/sharepoint-2.gif)
 
-## Prerequisites
+Empty calendar
 
-> Any special pre-requisites?
+![Empty calendar](docs/sharepoint-3.gif)
 
-## Solution
+## How to use / install
 
-| Solution    | Author(s)                                               |
-| ----------- | ------------------------------------------------------- |
-| folder name | Author details (name, company, twitter alias with link) |
+- Download the .sppkg file from the Releases page
+- Upload to Sharepoint App catalog
+- Add as a web part on a site
+- On the Properties panel of the web part, add a valid OpenAI API key
 
-## Version history
+![Property setting](docs/sharepoint-4.png)
 
-| Version | Date             | Comments        |
-| ------- | ---------------- | --------------- |
-| 1.1     | March 10, 2021   | Update comment  |
-| 1.0     | January 29, 2021 | Initial release |
+## Potential improvements
 
-## Disclaimer
+Obviously removing the OpenAI dependency would be preferable here, but:
 
-**THIS CODE IS PROVIDED _AS IS_ WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
+- Azure Open AI service is invite only at the moment
+- Somehow call the Bing Copilot API for "chat" when a Microsoft 365 tenant has access to it. This would be the best as then the solution would not require an API key.
 
----
-
-## Minimal Path to Awesome
-
-- Clone this repository
-- Ensure that you are at the solution folder
-- in the command-line run:
-  - **npm install**
-  - **gulp serve**
-
-> Include any additional steps as needed.
-
-## Features
-
-Description of the extension that expands upon high-level summary above.
-
-This extension illustrates the following concepts:
-
-- topic 1
-- topic 2
-- topic 3
-
-> Notice that better pictures and documentation will increase the sample usage and the value you are providing for others. Thanks for your submissions advance.
-
-> Share your web part with others through Microsoft 365 Patterns and Practices program to get visibility and exposure. More details on the community, open-source projects and other activities from http://aka.ms/m365pnp.
-
-## References
-
-- [Getting started with SharePoint Framework](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/set-up-your-developer-tenant)
-- [Building for Microsoft teams](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/build-for-teams-overview)
-- [Use Microsoft Graph in your solution](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/web-parts/get-started/using-microsoft-graph-apis)
-- [Publish SharePoint Framework applications to the Marketplace](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/publish-to-marketplace-overview)
-- [Microsoft 365 Patterns and Practices](https://aka.ms/m365pnp) - Guidance, tooling, samples and open-source controls for your Microsoft 365 development
